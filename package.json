@@ -1,0 +1,11 @@
+{
+  "name": "ikuma-lp",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:lp": "node scripts/combine-images.js"
+  },
+  "dependencies": {
+    "sharp": "^0.33.3"
+  }
+}

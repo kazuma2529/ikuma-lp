@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ikuma LP</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="lp">
+      <img
+        src="./public/lp-long.png"
+        alt="Ikuma LP 全体の縦長イメージ"
+        class="lp-image"
+      />
+    </main>
+    <footer class="lp-footer">
+      <small>&copy; <span id="lp-year"></span> Ikuma</small>
+    </footer>
+    <script>
+      (function () {
+        var yearEl = document.getElementById("lp-year");
+        if (yearEl) {
+          yearEl.textContent = String(new Date().getFullYear());
+        }
+      })();
+    </script>
+  </body>
+</html>
+
