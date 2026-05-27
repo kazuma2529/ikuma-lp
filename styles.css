@@ -4,6 +4,20 @@
   box-sizing: border-box;
 }
 
+:root {
+  --intro-bg: #f6f4f1;
+  --intro-text: #1c1917;
+  --intro-text-muted: #57534e;
+  --intro-accent: #44403c;
+  --intro-hint: #a8a29e;
+  --intro-font-serif: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho",
+    serif;
+  --intro-font-sans: "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont,
+    sans-serif;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+}
+
 html,
 body {
   margin: 0;
@@ -11,13 +25,222 @@ body {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background-color: #ffffff;
-  color: #111827;
+  font-family: var(--intro-font-sans);
+  background-color: var(--intro-bg);
+  color: var(--intro-text);
 }
+
+body.intro-active {
+  overflow: hidden;
+  height: 100dvh;
+}
+
+body.lp-revealed {
+  background-color: #ffffff;
+}
+
+/* ── Intro overlay ── */
+
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--intro-bg);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: opacity 1.1s var(--ease-in-out),
+    visibility 1.1s var(--ease-in-out);
+}
+
+.intro-overlay.is-revealing {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.intro-overlay.is-hidden {
+  visibility: hidden;
+}
+
+.intro-overlay__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 22rem;
+  min-height: 100dvh;
+  padding: 3.5rem 1.75rem 5rem;
+}
+
+/* ── Intro text content ── */
+
+.intro-content {
+  width: 100%;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(2.75rem);
+  transition: opacity 0.48s var(--ease-in-out),
+    transform 0.72s var(--ease-out-expo);
+  will-change: opacity, transform;
+}
+
+.intro-content.is-entering {
+  opacity: 0;
+  transform: translateY(2.75rem);
+}
+
+.intro-content.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.intro-content.is-visible .intro-paragraph,
+.intro-content.is-visible .intro-divider {
+  animation: block-rise 0.82s var(--ease-out-expo) backwards;
+}
+
+.intro-content.is-visible .intro-paragraph:nth-of-type(1),
+.intro-content.is-visible .intro-divider:nth-of-type(1) {
+  animation-delay: 0.06s;
+}
+
+.intro-content.is-visible .intro-paragraph:nth-of-type(2),
+.intro-content.is-visible .intro-divider:nth-of-type(2) {
+  animation-delay: 0.18s;
+}
+
+.intro-content.is-visible .intro-paragraph:nth-of-type(3),
+.intro-content.is-visible .intro-divider:nth-of-type(3) {
+  animation-delay: 0.3s;
+}
+
+.intro-content.is-visible .intro-paragraph:nth-of-type(4),
+.intro-content.is-visible .intro-divider:nth-of-type(4) {
+  animation-delay: 0.42s;
+}
+
+.intro-content.is-visible .intro-paragraph:nth-of-type(5),
+.intro-content.is-visible .intro-divider:nth-of-type(5) {
+  animation-delay: 0.54s;
+}
+
+@keyframes block-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.intro-content.is-exiting {
+  opacity: 0;
+  transform: translateY(-1.25rem);
+  transition-duration: 0.48s;
+  transition-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+}
+
+.intro-paragraph {
+  margin: 0 0 1.35rem;
+  font-family: var(--intro-font-serif);
+  font-size: clamp(1.05rem, 4.6vw, 1.2rem);
+  font-weight: 500;
+  line-height: 2;
+  letter-spacing: 0.06em;
+  color: var(--intro-text);
+}
+
+.intro-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.intro-line {
+  display: block;
+}
+
+.intro-paragraph--quote .intro-line {
+  font-size: clamp(1.1rem, 4.8vw, 1.28rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--intro-accent);
+}
+
+.intro-paragraph--closing .intro-line {
+  font-weight: 600;
+}
+
+.intro-divider {
+  margin: 1.75rem 0;
+  text-align: center;
+}
+
+.intro-divider span {
+  display: inline-block;
+  font-family: var(--intro-font-serif);
+  font-size: 0.85rem;
+  letter-spacing: 0.35em;
+  color: var(--intro-text-muted);
+  opacity: 0.55;
+}
+
+/* ── Tap hint ── */
+
+.intro-hint {
+  position: fixed;
+  bottom: max(1.75rem, env(safe-area-inset-bottom, 0px) + 1.25rem);
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--intro-font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--intro-hint);
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-in-out);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.intro-hint--ready {
+  opacity: 0.65;
+  animation: hint-pulse 2.4s var(--ease-in-out) infinite;
+}
+
+.intro-hint--final.intro-hint--ready {
+  opacity: 0.8;
+  letter-spacing: 0.14em;
+}
+
+@keyframes hint-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+/* ── LP (hidden until reveal) ── */
 
 .lp {
   min-height: 100vh;
+  opacity: 0;
+  transform: translateY(0.5rem);
+  transition: opacity 1s var(--ease-out-expo) 0.15s,
+    transform 1s var(--ease-out-expo) 0.15s;
+}
+
+.lp.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .lp-image {
@@ -31,5 +254,29 @@ body {
   text-align: center;
   font-size: 12px;
   color: #6b7280;
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-in-out) 0.5s;
 }
 
+.lp-footer.is-visible {
+  opacity: 1;
+}
+
+/* ── Reduced motion ── */
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-content,
+  .intro-overlay,
+  .lp,
+  .lp-footer,
+  .intro-hint {
+    transition-duration: 0.01ms !important;
+    animation: none !important;
+  }
+
+  .intro-content,
+  .intro-content.is-visible .intro-paragraph,
+  .intro-content.is-visible .intro-divider {
+    transform: none !important;
+  }
+}

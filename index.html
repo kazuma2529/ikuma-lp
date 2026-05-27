@@ -4,27 +4,39 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Ikuma LP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <div
+      id="intro-overlay"
+      class="intro-overlay"
+      role="button"
+      tabindex="0"
+      aria-label="タップして続ける"
+    >
+      <div class="intro-overlay__inner">
+        <div id="intro-content" class="intro-content" aria-live="polite"></div>
+        <p id="intro-hint" class="intro-hint">タップして続ける</p>
+      </div>
+    </div>
+
     <main class="lp">
       <img
         src="./public/lp-long.png"
         alt="Ikuma LP 全体の縦長イメージ"
         class="lp-image"
+        fetchpriority="high"
       />
     </main>
     <footer class="lp-footer">
       <small>&copy; <span id="lp-year"></span> Ikuma</small>
     </footer>
-    <script>
-      (function () {
-        var yearEl = document.getElementById("lp-year");
-        if (yearEl) {
-          yearEl.textContent = String(new Date().getFullYear());
-        }
-      })();
-    </script>
+    <script src="./intro.js"></script>
   </body>
 </html>
-
